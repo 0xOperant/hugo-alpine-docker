@@ -1,6 +1,6 @@
 FROM alpine:3.11
 
-ENV VERSION_HUGO 0.67.0
+ENV VERSION_HUGO=0.67.0
 
 RUN apk add --no-cache git openssl openssh py-pygments libc6-compat g++ curl
 
