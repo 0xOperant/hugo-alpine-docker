@@ -1,13 +1,20 @@
-FROM alpine:3.11
+FROM amazonlinux:2
 
 ENV VERSION_HUGO=0.67.0
 
-RUN apk add --no-cache git openssl openssh py-pygments libc6-compat g++ curl
-
-# install aws cli
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"  && \
-    unzip awscliv2.zip && \
-    sudo ./aws/install
+RUN yum -y update       && \
+    yum -y install         \
+        git                \
+        openssl            \
+        openssh-clients    \
+        py-pygments        \
+        libc6-compat       \
+        g++                \
+        curl               \
+        wget               \
+        tar                \
+    yum clean all       && \
+    rm -rf /var/cache/yum
 
 ## Install Hugo
 RUN wget https://github.com/gohugoio/hugo/releases/download/v${VERSION_HUGO}/hugo_extended_${VERSION_HUGO}_Linux-64bit.tar.gz && \
@@ -15,4 +22,5 @@ RUN wget https://github.com/gohugoio/hugo/releases/download/v${VERSION_HUGO}/hug
     mv /hugo /usr/bin/hugo && \
     rm -rf hugo_extended_${VERSION_HUGO}_Linux-64bit.tar.gz
 
-ENTRYPOINT [ "sh", "-c" ]
+EXPOSE 1313
+ENTRYPOINT [ "bash", "-c" ]
